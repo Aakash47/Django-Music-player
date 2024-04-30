@@ -1,0 +1,58 @@
+{%extends 'mtunes/basic.html'%}
+{% block title%}Mtunes{% endblock %}
+
+{% block body %}
+{% load static %}
+<div id="carouselExampleSlidesOnly" class="carousel slide mt-5" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{%static 'mtunes/m1.jpg'%}" height="500px" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{%static 'mtunes/m2.jpg'%}" height="500px" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{%static 'mtunes/m3.jpg'%}" height="500px" class="d-block w-100" alt="...">
+    </div>
+  </div>
+</div>
+
+<!-- #####################################################CARDS############################################################## -->
+<h2 style="padding-left: 8%; padding-top: 2%; font-family: 'Verdana';">Trending songs</h2>
+
+<div class="row w-100" style="padding-top: 2%; padding-left: 7%;">
+  {%for i in song %}
+  <div style="padding-left: 2%; padding-bottom: 3%;">
+    <div class="card" style="width: 18rem; ">
+      <img src="{{i.image.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{i.name}}</h5>
+        <p class="card-text">{{i.tags}}</p>
+        <a href="{% url 'songpost' i.song_id %}" class="btn btn-outline-danger">Listen Song</a>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+</div>
+<hr>
+
+{% if request.user.is_authenticated and myplaylist|length > 1 %}
+<h2 style="padding-left: 8%; padding-top: 2%; font-family: 'Verdana';">My Playlist</h2>
+<div class="row" style="padding-top: 2%; padding-left: 7%;">
+  {% for playlist in myplaylist reversed %}
+  <div style="padding-left: 2%; padding-bottom: 3%;">
+    <div class="card" style="width: 18rem; ">
+      <img src="{{playlist.song.image.url}}" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{playlist.song.name}}</h5>
+        <p class="card-text">{{playlist.song.tags}}</p>
+        <a href="{% url 'songpost' playlist.song.song_id %}" class="btn btn-outline-danger">Listen Song</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+<hr>
+
+{% endblock %}

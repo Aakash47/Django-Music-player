@@ -1,0 +1,34 @@
+{%extends 'mtunes/basic.html'%}
+{% block title%}Mtunes{% endblock %}
+
+{% block body %}
+{% load static %} 
+<h1 style="color: rgb(158, 60, 60); text-align: center;">Watch Later</h1>
+
+{% if song|length < 1 %}
+        <h3 style="text-align: center; padding-top: 5%;">You have no Song in your Playlist</h3>
+{% endif %}
+
+<div class="container mt-5">
+{% for i in song reversed %}
+<div class="card mb-3" style="max-width: 940px; padding-top: 0%;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src="{{i.song.image.url}}" class="card-img" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title" style="color: green; font-weight: 550;">{{i.song.name}}</h5>
+          <p class="card-text">Tags: {{i.song.tags}}</p>
+        <p class="card-text">Movie: {{i.song.movie}}</p>
+          <a href="{% url 'songpost' i.song.song_id %}"><button class="btn btn-outline-danger">Listen Song</button></a>
+          <a href="{% url 'removewatchlater' i.watch_id %}"><button class="btn btn-outline-danger">Remove</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'mtunes/basic.html' %}
+{% block title%}All Songs {%endblock%}
+
+{%block body%}
+
+<div class="container">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="messages">
+        <p class="alert {{message.tags}}" style="margin: 1rem; margin-top: 4rem;">{{message}}</p>
+    </div>
+    {% endfor %}
+    {% endif%}
+    <div class="row mb-5">
+        <div class="col-md-6" style="padding-left: 10%; padding-top: 12%;">
+            <img src="{{song.image.url}}" alt="" height="300px">
+        </div>
+        <div class="col-md-6" style="padding-top: 10%;">
+            <h2 style="padding-top: 6%; font-weight: 550; ">Title: {{song.name}}</h2>
+            <h5 style="padding-top: 2%; font-weight: 550;">Category: {{song.tags}}</h5>
+            <h5 style="padding-top: 2%; font-weight: 550;">Movie: {{song.movie}}</h5>
+            <h5 style="padding-top: 2%; font-weight: 550;">Singer: {{song.singer}}</h5>
+            <audio controls>
+                <source src="{{song.song.url}}" type="audio/mp3">
+            </audio>
+            
+            <div style="padding-top: 2%;">
+                <div class="row">
+                    <form action="{% url 'watchlater' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{song.song_id}}">
+                        <button type="submit" class="btn btn-outline-danger">Add to My Playlist</button>
+                    </form>
+                    <a class="pl-5" href="{{song.song.url}}" download><button class="btn btn-outline-danger">Download
+                            Song</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h2 style="padding-left: 8%; padding-top: 2%; font-family: 'Verdana';">Trending songs</h2>
+
+    <div class="row" style="padding-top: 2%; padding-left: 7%;">
+        {%for i in songs %}
+        <div style="padding-left: 2%; padding-bottom: 3%;">
+            <div class="card" style="width: 18rem; ">
+                <img src="{{i.image.url}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{i.name}}</h5>
+                    <p class="card-text">{{i.tags}}</p>
+                    <a href="{% url 'songpost' i.song_id %}" class="btn btn-outline-danger">Listen Song</a>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
+    <hr>
+</div>
+{%endblock%}
